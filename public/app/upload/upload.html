@@ -1,0 +1,53 @@
+<!-- Use controller as for better readability -->
+<div ng-controller="uploadController as upldCtlr" class="container rabo-fileupload">
+    <div class="panel panel-default fileupload-panel">
+
+        <div class="panel-body">
+            <span class="glyphicon glyphicon-cloud-upload icon-upload"></span>
+            <h2>Upload files to validate</h2>
+            <button class="btn btn-lg upload-btn" ngf-select="upldCtlr.uploadFiles($files)" multiple accept="csv,xml">Select Files</button>
+            <br>
+
+            <span class="progress-bar" style="width:{{upldCtlr.progress}}%" ng-show="upldCtlr.progress >= 0">
+                <div  ng-bind="upldCtlr.progress + '%'"></div>
+            </span>
+
+        </div>
+    </div>
+
+    <div class="panel panel-default" ng-repeat="(key, value) in upldCtlr.result">
+
+        <!-- This will be the file name-->
+        <div class="panel-heading">
+            <span ng-bind="key | labelMap"></span>
+        </div>
+
+        <div class="panel-body">
+            <div class="row error-body" ng-repeat="rec in value">
+                <div class="col-xs-12 content-header">
+                    <div class="col-xs-6" ng-if="$index === 0">Transaction Reference</div>
+                    <div class="col-xs-6" ng-if="$index === 0">Description</div>
+                </div>
+                <!-- Display reference number and Description-->
+                <div class="col-xs-12">
+                    <div class="col-xs-6" ng-bind="rec.refNo"></div>
+                    <div class="col-xs-6" ng-bind="rec.desc"></div>
+                </div>
+            </div>
+            <!-- no errors-->
+            <div ng-if="value && value.length === 0">
+                No items to show
+            </div>
+        </div>
+    </div>
+
+    <!-- default message-->
+    <div class="panel panel-info fileupload-panel noresult" ng-if="upldCtlr.showDefaultMsg">
+        <p>No results to show. Upload files to catch the below errors</p>
+        <ul>
+            <li>Duplicate Transaction reference number</li>
+            <li>End balance calculation mismatch</li>
+        </ul>
+    </div>
+
+</div>
